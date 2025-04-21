@@ -373,4 +373,4 @@ GOOD LUCK 😀
 
 // The magic of chaining methods
 const eurToUsd = 1.1;
-const totalDepositsUSD = movements.filter(mov => mov > 0,2,3,4).map(mov => mov * eurToUsd).reduce((acc, mov) => acc + mov, 0)
+const totalDepositsUSD = movements.filter(mov => mov > 0,2,3,4,5).map(mov => mov * eurToUsd).reduce((acc, mov) => acc + mov, 0)
