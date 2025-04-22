@@ -168,7 +168,7 @@ btnLogin.addEventListener('click', function(e){
 //   ['GBP', 'Pound sterling'],
 // ]);
 
-const movements = [200, 450, -400, 3000, -650, -130, 70, 1300,2];
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300,2,3];
 
 /////////////////////////////////////////////////
 // let arr = ['a', 'b', 'c','d','e']
