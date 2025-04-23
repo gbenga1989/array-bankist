@@ -83,10 +83,11 @@ const displayMovements = function(movements){
 
 
 
-const calcDisplayBalance = function(movements){
-  const balance = movements.reduce((acc, mov) => acc + mov, 0);
+const calcDisplayBalance = function(acc){
+  acc.balance  = acc.movements.reduce((acc, mov) => acc + mov, 0);
 
-  labelBalance.textContent = `${balance}€`
+
+  labelBalance.textContent = `${acc.balance}€`
 };
 
 
@@ -125,6 +126,16 @@ const createUsernames = function(accs){
   };
 createUsernames(accounts);
 
+const updateUI = function(acc){
+  // display movements
+    displayMovements(acc.movements)
+
+    // display balance
+    calcDisplayBalance(acc)
+
+    // display summary
+    calcDisplaySummary(acc)
+}
 
 // EVENT HANDLERS
 let currentAccount;
@@ -145,19 +156,50 @@ btnLogin.addEventListener('click', function(e){
     inputLoginUsername.value = inputLoginPin.value = '';
     inputLoginPin.blur();
 
-    // display movements
-    displayMovements(currentAccount.movements)
-
-    // display balance
-    calcDisplayBalance(currentAccount.movements)
-
-    // display summary
-    calcDisplaySummary(currentAccount)
+    // upadte ui
+    updateUI(currentAccount)
     
   }
+});
+
+
+btnTransfer.addEventListener('click', function(e){
+  e.preventDefault();
+  const amount = Number(inputTransferAmount.value);
+  const recieverAcc = accounts.find(acc => acc.username === inputTransferTo.value);
+  
+  inputTransferAmount.value = inputTransferTo.value = '';
+
+  if(amount > 0 && 
+    // recieverAcc &&
+    currentAccount.balance >= amount &&
+    recieverAcc.username !== currentAccount.username){
+      currentAccount.movements.push(-amount);
+      recieverAcc.movements.push(amount);
+
+       // upadte ui
+    updateUI(currentAccount)
+    }
 })
 
+btnClose.addEventListener('click', function(e){
+  e.preventDefault();
 
+
+  if(inputCloseUsername.value == currentAccount.username && Number(inputClosePin.value) === currentAccount.pin){
+    const index = accounts.findIndex(acc => acc.username === currentAccount.username);
+
+    console.log(index);
+    // .indexof(23)
+
+    // delete account
+    accounts.splice(index, 1);
+
+    // hide ui
+    containerApp.style.opacity = 0;
+  }
+     inputCloseUsername.value = inputClosePin.value = '';
+})
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
@@ -168,7 +210,7 @@ btnLogin.addEventListener('click', function(e){
 //   ['GBP', 'Pound sterling'],
 // ]);
 
-const movements = [200, 450, -400, 3000, -650, -130, 70, 1300,2,3,4,5,7,8,9,10];
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 /////////////////////////////////////////////////
 // let arr = ['a', 'b', 'c','d','e']
